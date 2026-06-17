@@ -1,0 +1,412 @@
+{
+  "info": {
+    "name": "AI Product Manager Copilot",
+    "description": "Postman collection for the AI Product Manager Copilot FastAPI backend, containing all feedback, planning, integration, QA, and lifecycle endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Diagnostics",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Retrieve connection status, version info, and check which integrations are active."
+          }
+        },
+        {
+          "name": "Test Connection",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/test-connection",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "test-connection"
+              ]
+            },
+            "description": "Verifies that the configured Gemini or Groq API credentials are valid and responding."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Core Flow",
+      "item": [
+        {
+          "name": "Analyze Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"feedback_items\": [\n    \"The CSV downloads time out when we have more than 5,000 users. Major blocker.\",\n    \"CSV export is extremely slow and crashes the page on operations tab.\"\n  ],\n  \"company_context\": \"SaaS Operations Dashboard\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/analyze-feedback",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "analyze-feedback"
+              ]
+            },
+            "description": "Ingests customer feedback logs and clusters them into urgency, sentiment, and themes."
+          }
+        },
+        {
+          "name": "Generate PRD",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"feature_idea\": \"Asynchronous CSV Export Processing\",\n  \"target_audience\": \"Operations Managers\",\n  \"business_objectives\": \"Reduce user wait time and server timeouts\",\n  \"key_requirements\": [\n    \"Process CSV generation in the background\",\n    \"Send email notification once finished\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/generate-prd",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "generate-prd"
+              ]
+            },
+            "description": "Generates a complete Product Requirement Document (PRD) from ideas and constraints."
+          }
+        },
+        {
+          "name": "Analyze Feasibility",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prd_content\": \"# PRD: Asynchronous CSV Export\\n\\n## Summary\\nWe need background task processing to offload CSV generation.\",\n  \"repo_path\": \"./scratch_mock_repo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/analyze-feasibility",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "analyze-feasibility"
+              ]
+            },
+            "description": "Scans the codebase and assesses PRD implementation feasibility, risks, and effort hours."
+          }
+        },
+        {
+          "name": "Generate Sprint Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prd_content\": \"# PRD: Asynchronous CSV Export\\n\\n## Objectives\\n- Asynchronous background workers\\n- Email triggers\",\n  \"feasibility_report\": {\n    \"complexity\": \"Medium\",\n    \"complexity_rationale\": \"Requires setting up task queue\",\n    \"effort_estimate_hours\": 40\n  },\n  \"sprint_duration_weeks\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/generate-sprint-plan",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "generate-sprint-plan"
+              ]
+            },
+            "description": "Decomposes a PRD and feasibility report into structured sprint tickets."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Integrations",
+      "item": [
+        {
+          "name": "Export Notion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Asynchronous CSV Export\",\n  \"content_markdown\": \"# PRD: Asynchronous CSV Export\\n\\n## Objectives\\nWe need background task processing to offload CSV generation.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/export-notion",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "export-notion"
+              ]
+            },
+            "description": "Exports a PRD markdown document to a page in your Notion workspace."
+          }
+        },
+        {
+          "name": "Export Jira",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tickets\": [\n    {\n      \"id\": \"KAN-1\",\n      \"title\": \"Setup Celery background worker\",\n      \"description\": \"Configure Celery broker and worker process to support async tasks.\",\n      \"acceptance_criteria\": [\"Worker starts successfully\", \"Broker handles sample task\"],\n      \"story_points\": 5,\n      \"priority\": \"High\",\n      \"assignee_role\": \"DevOps\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/export-jira",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "export-jira"
+              ]
+            },
+            "description": "Pushes the sprint backlog tickets to Jira Cloud (runs in Dry-Run mode if credentials are missing)."
+          }
+        },
+        {
+          "name": "Export Linear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tickets\": [\n    {\n      \"id\": \"KAN-1\",\n      \"title\": \"Setup Celery background worker\",\n      \"description\": \"Configure Celery broker and worker process to support async tasks.\",\n      \"acceptance_criteria\": [\"Worker starts successfully\"],\n      \"story_points\": 5,\n      \"priority\": \"High\",\n      \"assignee_role\": \"DevOps\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/export-linear",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "export-linear"
+              ]
+            },
+            "description": "Pushes the sprint backlog tickets to Linear (runs in Dry-Run mode if credentials are missing)."
+          }
+        },
+        {
+          "name": "Export Slack",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sprint_goal\": \"Implement Asynchronous CSV Export System\",\n  \"tickets\": [\n    {\n      \"id\": \"KAN-1\",\n      \"title\": \"Setup Celery background worker\",\n      \"description\": \"Configure Celery broker and worker process to support async tasks.\",\n      \"acceptance_criteria\": [\"Worker starts successfully\"],\n      \"story_points\": 5,\n      \"priority\": \"High\",\n      \"assignee_role\": \"DevOps\"\n    }\n  ],\n  \"custom_message\": \"Backlog generated and exported to boards.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/export-slack",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "export-slack"
+              ]
+            },
+            "description": "Sends a sprint kickoff summary block layout to a Slack channel webhook."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Git & QA Engine",
+      "item": [
+        {
+          "name": "Create Branch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"repo_owner\": \"google\",\n  \"repo_name\": \"antigravity\",\n  \"branch_name\": \"feat-kan-1-celery-worker\",\n  \"base_branch\": \"main\",\n  \"git_provider\": \"github\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/create-branch",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "create-branch"
+              ]
+            },
+            "description": "Creates a remote Git task branch on GitHub or GitLab."
+          }
+        },
+        {
+          "name": "Audit PR",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"repo_owner\": \"google\",\n  \"repo_name\": \"antigravity\",\n  \"pr_number\": 42,\n  \"acceptance_criteria\": [\n    \"Processes CSV generation in the background\",\n    \"Triggers an email verification completion\"\n  ],\n  \"git_provider\": \"github\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/audit-pr",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "audit-pr"
+              ]
+            },
+            "description": "Audits a pull request's file modifications against a ticket's Acceptance Criteria."
+          }
+        },
+        {
+          "name": "QA Feature Spec",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"feature_specs\": [\n    \"Processes CSV generation in the background\",\n    \"Triggers an email verification completion\"\n  ],\n  \"repo_path\": \"./scratch_mock_repo\",\n  \"user_query\": \"Does the exporter.py codebase implement background celery compiling task?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/qa-feature",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "qa-feature"
+              ]
+            },
+            "description": "Queries the codebase structure and compares implementations against PRD launch specifications."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Lifecycle",
+      "item": [
+        {
+          "name": "Version Upgrade v2.0",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"previous_prd\": \"# PRD: CSV Export\\nSynchronous CSV downloads on operations page.\",\n  \"upgrade_input\": \"Upgrade the CSV export system to support asynchronous downloads and email notifications.\",\n  \"repo_path\": \"./scratch_mock_repo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/version-upgrade",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "version-upgrade"
+              ]
+            },
+            "description": "Transforms a legacy PRD and codebase references into a fully upgraded v2.0 specification and changelog."
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    }
+  ]
+}
