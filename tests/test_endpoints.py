@@ -648,3 +648,23 @@ def test_version_upgrade_service_dry_run():
         )
         assert res.success is True
         assert "# Version 2.0 PRD" in res.updated_prd
+
+def test_ui_endpoints():
+    """Verify that UI endpoints respond successfully with correct media types."""
+    # Test GET /ui
+    response = client.get("/ui")
+    assert response.status_code == 200
+    assert "text/html" in response.headers["content-type"]
+    assert "PM Copilot" in response.text
+
+    # Test GET /ui/style.css
+    response = client.get("/ui/style.css")
+    assert response.status_code == 200
+    assert "text/css" in response.headers["content-type"]
+    assert "CSS Variables" in response.text
+
+    # Test GET /ui/app.js
+    response = client.get("/ui/app.js")
+    assert response.status_code == 200
+    assert "application/javascript" in response.headers["content-type"]
+    assert "currentPrdTitle" in response.text

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Product Manager Copilot</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Prism Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="/ui/style.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-wrapper">
+                    <i data-lucide="cpu" class="logo-icon"></i>
+                    <span class="logo-text">PM Copilot</span>
+                </div>
+                <div class="status-indicator-badge">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">Connected</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-target="dashboard-tab">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item-header">Product Flow</li>
+                    <li class="nav-item" data-target="feedback-tab">
+                        <i data-lucide="message-square-quote"></i>
+                        <span>Feedback Analyzer</span>
+                    </li>
+                    <li class="nav-item" data-target="prd-tab">
+                        <i data-lucide="file-text"></i>
+                        <span>PRD Generator</span>
+                    </li>
+                    <li class="nav-item" data-target="feasibility-tab">
+                        <i data-lucide="activity"></i>
+                        <span>Feasibility Audit</span>
+                    </li>
+                    <li class="nav-item" data-target="sprint-tab">
+                        <i data-lucide="calendar-range"></i>
+                        <span>Sprint Planner</span>
+                    </li>
+                    <li class="nav-item-header">Developer Compliance</li>
+                    <li class="nav-item" data-target="git-qa-tab">
+                        <i data-lucide="git-merge"></i>
+                        <span>Git & QA Tools</span>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Sidebar Footer Config Diagnostic -->
+            <div class="sidebar-footer">
+                <div class="config-header">
+                    <span>API Integrations</span>
+                    <button class="icon-btn refresh-status-btn" id="check-connection-btn" title="Refresh Connections">
+                        <i data-lucide="refresh-cw"></i>
+                    </button>
+                </div>
+                <div class="config-status-list" id="diagnostics-list">
+                    <div class="config-status-item loading">
+                        <span class="config-name">LLM Engine</span>
+                        <span class="config-badge">checking</span>
+                    </div>
+                    <div class="config-status-item loading">
+                        <span class="config-name">Jira Cloud</span>
+                        <span class="config-badge">checking</span>
+                    </div>
+                    <div class="config-status-item loading">
+                        <span class="config-name">Notion Workspace</span>
+                        <span class="config-badge">checking</span>
+                    </div>
+                    <div class="config-status-item loading">
+                        <span class="config-name">Linear Board</span>
+                        <span class="config-badge">checking</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Workspace Content -->
+        <main class="main-content">
+            
+            <!-- Global Banner Notification -->
+            <div id="notification-banner" class="notification-banner hidden">
+                <div class="notification-content">
+                    <i data-lucide="info" class="notif-icon"></i>
+                    <span id="notification-message">Welcome to PM Copilot</span>
+                </div>
+                <button class="notif-close-btn" onclick="hideNotification()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <!-- DASHBOARD TAB -->
+            <section id="dashboard-tab" class="tab-content active">
+                <div class="page-header">
+                    <h1>Product Management Copilot</h1>
+                    <p class="subtitle">AI-Native feasibility analysis, sprint decomposition, and integrations hub.</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <!-- Workflow Map Card -->
+                    <div class="dashboard-card full-width">
+                        <h3><i data-lucide="git-branch" class="card-icon indigo"></i> End-to-End Workflow Pipeline</h3>
+                        <div class="workflow-timeline">
+                            <div class="timeline-step cursor-pointer" onclick="switchTab('feedback-tab')">
+                                <div class="step-num">1</div>
+                                <h4>Feedback Intelligence</h4>
+                                <p>Aggregate customer logs into categorized bugs/themes.</p>
+                            </div>
+                            <div class="timeline-step cursor-pointer" onclick="switchTab('prd-tab')">
+                                <div class="step-num">2</div>
+                                <h4>PRD Generation</h4>
+                                <p>Convert themes and user goals into detailed specs & user stories.</p>
+                            </div>
+                            <div class="timeline-step cursor-pointer" onclick="switchTab('feasibility-tab')">
+                                <div class="step-num">3</div>
+                                <h4>Feasibility Scanner</h4>
+                                <p>Evaluate requirements against codebase to map exact file adjustments.</p>
+                            </div>
+                            <div class="timeline-step cursor-pointer" onclick="switchTab('sprint-tab')">
+                                <div class="step-num">4</div>
+                                <h4>Sprint Breakdown</h4>
+                                <p>Decompose implementation tasks into Scrum backlog tickets & estimate points.</p>
+                            </div>
+                            <div class="timeline-step cursor-pointer" onclick="switchTab('git-qa-tab')">
+                                <div class="step-num">5</div>
+                                <h4>Compliance Check</h4>
+                                <p>Audit Pull Requests against acceptance criteria or perform QA audits.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connection Diagnostic Card -->
+                    <div class="dashboard-card">
+                        <h3><i data-lucide="radio" class="card-icon emerald"></i> System Configuration Status</h3>
+                        <p class="card-desc">Check active integrations configured via the local backend .env parameters.</p>
+                        
+                        <div class="system-status-container">
+                            <div class="status-row">
+                                <span class="label">Backend Server</span>
+                                <span class="badge success">Online</span>
+                            </div>
+                            <div class="status-row">
+                                <span class="label">Claude / Gemini Engine</span>
+                                <span class="badge" id="diag-llm">Unknown</span>
+                            </div>
+                            <div class="status-row">
+                                <span class="label">Jira Cloud Integration</span>
+                                <span class="badge" id="diag-jira">Unknown</span>
+                            </div>
+                            <div class="status-row">
+                                <span class="label">Notion Workspace</span>
+                                <span class="badge" id="diag-notion">Unknown</span>
+                            </div>
+                            <div class="status-row">
+                                <span class="label">Linear Boards</span>
+                                <span class="badge" id="diag-linear">Unknown</span>
+                            </div>
+                            <div class="status-row">
+                                <span class="label">Slack Alerts Webhook</span>
+                                <span class="badge" id="diag-slack">Unknown</span>
+                            </div>
+                        </div>
+                        <button class="btn secondary full-width mt-1" id="diag-test-btn">
+                            <i data-lucide="activity"></i> Run Connection Diagnostics
+                        </button>
+                    </div>
+
+                    <!-- Workspace Info Card -->
+                    <div class="dashboard-card">
+                        <h3><i data-lucide="terminal" class="card-icon purple"></i> Local Workspace Info</h3>
+                        <p class="card-desc">Scan target parameters for code analysis repositories.</p>
+                        
+                        <div class="workspace-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Mock Repo Path</span>
+                                <span class="detail-val code-path" id="dashboard-mock-path">Loading...</span>
+                            </div>
+                            <div class="detail-item mt-1">
+                                <span class="detail-label">Max Code Scan limit</span>
+                                <span class="detail-val">500,000 tokens</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-alert mt-1">
+                            <i data-lucide="shield-check"></i>
+                            <span>All scans run locally. Code context is processed transiently and never persisted by the backend.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- FEEDBACK ANALYZER TAB -->
+            <section id="feedback-tab" class="tab-content">
+                <div class="page-header">
+                    <h1>Feedback Intelligence</h1>
+                    <p class="subtitle">Categorize raw customer logs, support tickets, and review snippets into actionable PM themes.</p>
+                </div>
+                
+                <div class="split-layout">
+                    <!-- Inputs Panel -->
+                    <div class="panel form-panel">
+                        <h2>Analyze Feedback</h2>
+                        
+                        <form id="feedback-form">
+                            <div class="form-group">
+                                <label for="feedback-context">Company & Product Context</label>
+                                <input type="text" id="feedback-context" placeholder="e.g. SaaS Operations Dashboard, E-commerce mobile app" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Customer Feedback Items</label>
+                                <div id="feedback-items-container" class="dynamic-inputs">
+                                    <div class="dynamic-input-row">
+                                        <textarea class="feedback-item-input" placeholder="Paste user ticket comment or review here..." rows="3" required></textarea>
+                                        <button type="button" class="icon-btn delete-row-btn" onclick="removeInputRow(this)" title="Delete comment">
+                                            <i data-lucide="trash-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn secondary text-sm mt-0-5" onclick="addFeedbackInputRow()">
+                                    <i data-lucide="plus"></i> Add Feedback Row
+                                </button>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-instructions">Custom Analysis Guidelines (Optional)</label>
+                                <textarea id="feedback-instructions" placeholder="e.g. Focus categories on usability and UI problems..." rows="2"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn primary full-width">
+                                <i data-lucide="search-code"></i> Extract Clusters & Insights
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Outputs Panel -->
+                    <div class="panel output-panel" id="feedback-output">
+                        <div class="output-placeholder">
+                            <i data-lucide="line-chart" class="placeholder-icon"></i>
+                            <h3>Insights Awaiting Feedback Analysis</h3>
+                            <p>Submit the form on the left to cluster support logs and retrieve recommended actions.</p>
+                        </div>
+                        
+                        <div class="output-content hidden">
+                            <div class="output-header">
+                                <h2>Analysis Findings</h2>
+                                <span class="badge total-processed" id="feedback-total-processed">0 Processed</span>
+                            </div>
+                            
+                            <!-- Takeaways Card -->
+                            <div class="takeaways-card">
+                                <h4><i data-lucide="lightbulb" class="yellow"></i> Key Strategic Takeaways</h4>
+                                <ul class="takeaways-list" id="feedback-takeaways">
+                                    <!-- Dynamic items -->
+                                </ul>
+                            </div>
+                            
+                            <!-- Clusters List -->
+                            <div class="clusters-container mt-1-5">
+                                <h4>Identified Theme Clusters</h4>
+                                <div class="clusters-list" id="feedback-clusters-list">
+                                    <!-- Dynamic cards -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- PRD GENERATOR TAB -->
+            <section id="prd-tab" class="tab-content">
+                <div class="page-header">
+                    <h1>Product Requirement Document Generator</h1>
+                    <p class="subtitle">Converts feature concepts and objectives into comprehensive, implementation-ready PRDs.</p>
+                </div>
+                
+                <div class="split-layout">
+                    <!-- Inputs Form -->
+                    <div class="panel form-panel">
+                        <h2>Draft Product Specs</h2>
+                        
+                        <form id="prd-form">
+                            <div class="form-group">
+                                <label for="prd-concept">Feature Concept / Idea</label>
+                                <textarea id="prd-concept" placeholder="Define the feature or bug to solve (e.g. Implement a background Celery task compiler for large CSV exports with email alerting once done)" rows="3" required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="prd-audience">Target User Audience</label>
+                                <input type="text" id="prd-audience" placeholder="e.g. Operations Managers, Workspace Admin Users" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="prd-objectives">Business Objectives</label>
+                                <input type="text" id="prd-objectives" placeholder="e.g. Reduce user wait times, solve server connection timeout exception errors" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Key Requirements Checklist</label>
+                                <div id="prd-requirements-container" class="dynamic-inputs">
+                                    <div class="dynamic-input-row">
+                                        <input type="text" class="prd-req-input" placeholder="e.g. Process heavy compilation in background queue threads" required>
+                                        <button type="button" class="icon-btn delete-row-btn" onclick="removeInputRow(this)">
+                                            <i data-lucide="trash-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn secondary text-sm mt-0-5" onclick="addPrdRequirementRow()">
+                                    <i data-lucide="plus"></i> Add Requirement
+                                </button>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="prd-instructions">Custom Architectural & Writing Guidelines (Optional)</label>
+                                <textarea id="prd-instructions" placeholder="e.g. Keep style clean, propose API response formats, recommend modular Python files..." rows="2"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn primary full-width">
+                                <i data-lucide="file-edit"></i> Generate PRD Specs
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Outputs Render -->
+                    <div class="panel output-panel" id="prd-output">
+                        <div class="output-placeholder">
+                            <i data-lucide="file-spreadsheet" class="placeholder-icon"></i>
+                            <h3>Awaiting Requirements Input</h3>
+                            <p>Populate the feature concept form to draft a detailed Product Requirement Document (PRD).</p>
+                        </div>
+                        
+                        <div class="output-content hidden">
+                            <div class="output-actions">
+                                <h2 id="prd-output-title">Feature Title</h2>
+                                <div class="action-buttons-group">
+                                    <button class="btn secondary text-sm" onclick="copyPrdMarkdown()" title="Copy Markdown to Clipboard">
+                                        <i data-lucide="copy"></i> Copy Markdown
+                                    </button>
+                                    <button class="btn secondary text-sm" onclick="downloadPrd()" title="Download PRD as Markdown">
+                                        <i data-lucide="download"></i> Download PRD
+                                    </button>
+                                    <button class="btn accent text-sm" id="export-notion-btn">
+                                        <i data-lucide="external-link"></i> Export to Notion
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="tabs-subnav mt-1">
+                                <button class="subnav-item active" data-subtarget="prd-preview">Rendered PRD</button>
+                                <button class="subnav-item" data-subtarget="prd-raw">Raw Markdown</button>
+                            </div>
+                            
+                            <div class="prd-viewer-content mt-1">
+                                <div id="prd-preview" class="prd-tab-panel markdown-body active">
+                                    <!-- Rendered markdown goes here -->
+                                </div>
+                                <pre id="prd-raw" class="prd-tab-panel"><code class="language-markdown" id="prd-raw-code"></code></pre>
+                            </div>
+                            
+                            <!-- Connect Next Step -->
+                            <div class="next-step-box mt-2">
+                                <div class="next-step-text">
+                                    <h4>Next Step: Technical Feasibility Scan</h4>
+                                    <p>Run this generated PRD against your local codebase folder to analyze file impacts, complexity, and dependencies.</p>
+                                </div>
+                                <button class="btn primary" onclick="sendPrdToFeasibility()">
+                                    Analyze Feasibility <i data-lucide="arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- FEASIBILITY AUDIT TAB -->
+            <section id="feasibility-tab" class="tab-content">
+                <div class="page-header">
+                    <h1>Technical Feasibility Scanner</h1>
+                    <p class="subtitle">Scans your local directories and validates PRDs to detail engineering effort hours and codebase files impact.</p>
+                </div>
+                
+                <div class="split-layout">
+                    <!-- Inputs Form -->
+                    <div class="panel form-panel">
+                        <h2>Run Codebase Audit</h2>
+                        
+                        <form id="feasibility-form">
+                            <div class="form-group">
+                                <label for="feasibility-prd">PRD Content (Markdown)</label>
+                                <textarea id="feasibility-prd" placeholder="Paste Markdown PRD here..." rows="8" required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feasibility-repo">Local Codebase Repository Path (Absolute)</label>
+                                <input type="text" id="feasibility-repo" placeholder="e.g. D:/PM agent" required>
+                                <span class="help-text">Point to the local directory path containing code files to analyze.</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feasibility-instructions">Custom Audit Directives (Optional)</label>
+                                <textarea id="feasibility-instructions" placeholder="e.g. Pay close attention to file updates in app/services/ and check database migrations" rows="2"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn primary full-width">
+                                <i data-lucide="binary"></i> Scan & Calculate Feasibility
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Outputs Render -->
+                    <div class="panel output-panel" id="feasibility-output">
+                        <div class="output-placeholder">
+                            <i data-lucide="compass" class="placeholder-icon"></i>
+                            <h3>Awaiting Feasibility Scan</h3>
+                            <p>Provide a PRD and absolute folder path on the left to generate file tree impact assessments.</p>
+                        </div>
+                        
+                        <div class="output-content hidden">
+                            <div class="output-header flex-column">
+                                <div class="flex-row justify-between w-full align-center">
+                                    <h2>Feasibility Verdict</h2>
+                                    <span class="complexity-badge" id="feas-complexity">Medium</span>
+                                </div>
+                                <p class="complexity-rationale mt-0-5" id="feas-complexity-rationale"></p>
+                            </div>
+                            
+                            <!-- KPI Metrics Grid -->
+                            <div class="kpi-grid mt-1">
+                                <div class="kpi-card">
+                                    <span class="kpi-num" id="feas-effort">0 hrs</span>
+                                    <span class="kpi-label">Estimated Developer Time</span>
+                                </div>
+                                <div class="kpi-card">
+                                    <span class="kpi-num" id="feas-dependencies-count">0</span>
+                                    <span class="kpi-label">New Libraries Required</span>
+                                </div>
+                                <div class="kpi-card">
+                                    <span class="kpi-num" id="feas-files-impacted">0</span>
+                                    <span class="kpi-label">Affected Files</span>
+                                </div>
+                            </div>
+                            
+                            <div class="feas-summary-box mt-1-5">
+                                <h4>Executive Summary</h4>
+                                <p id="feas-summary-text"></p>
+                            </div>
+                            
+                            <!-- Architectural File Impacts -->
+                            <div class="section-container mt-1-5">
+                                <h4>Architectural File Checklist</h4>
+                                <div class="file-impact-list" id="feas-files-list">
+                                    <!-- Dynamic file entries -->
+                                </div>
+                            </div>
+                            
+                            <!-- Risks List -->
+                            <div class="section-container mt-1-5">
+                                <h4>Technical Risks & Mitigation Strategies</h4>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Risk Category</th>
+                                                <th>Impact</th>
+                                                <th>Mitigation Plan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="feas-risks-table">
+                                            <!-- Dynamic table rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Connect Next Step -->
+                            <div class="next-step-box mt-2">
+                                <div class="next-step-text">
+                                    <h4>Next Step: Sprint Planning Breakdown</h4>
+                                    <p>Translate this feasibility report and PRD requirements directly into Fibonacci user stories and developer backlogs.</p>
+                                </div>
+                                <button class="btn primary" onclick="sendToSprintPlanner()">
+                                    Plan Sprint <i data-lucide="arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SPRINT PLANNER TAB -->
+            <section id="sprint-tab" class="tab-content">
+                <div class="page-header">
+                    <h1>Sprint Decomposer & Task Planner</h1>
+                    <p class="subtitle">Decomposes product features and architecture constraints into Scrum sprint backlog tasks.</p>
+                </div>
+                
+                <div class="split-layout">
+                    <!-- Inputs Form -->
+                    <div class="panel form-panel">
+                        <h2>Configure Sprint Decomposer</h2>
+                        
+                        <form id="sprint-form">
+                            <div class="form-group">
+                                <label for="sprint-prd">PRD Content (Markdown)</label>
+                                <textarea id="sprint-prd" placeholder="Paste Markdown PRD here..." rows="6" required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sprint-feasibility-json">Feasibility Analysis Report (Optional JSON)</label>
+                                <textarea id="sprint-feasibility-json" placeholder="Paste Feasibility report JSON response if running independently..." rows="4"></textarea>
+                                <span class="help-text">Providing the feasibility audit report allows the AI planner to assign exact file-modification tasks.</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sprint-duration">Target Sprint Duration (Weeks)</label>
+                                <input type="number" id="sprint-duration" value="2" min="1" max="4" required>
+                            </div>
+                            
+                            <button type="submit" class="btn primary full-width">
+                                <i data-lucide="calendar"></i> Generate Sprint Plan & Tickets
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Outputs Render -->
+                    <div class="panel output-panel" id="sprint-output">
+                        <div class="output-placeholder">
+                            <i data-lucide="list-todo" class="placeholder-icon"></i>
+                            <h3>Sprint Backlog Devoid of Tickets</h3>
+                            <p>Specify requirements specs on the left to break down sprint objectives into story cards.</p>
+                        </div>
+                        
+                        <div class="output-content hidden">
+                            <div class="output-header flex-column">
+                                <h2>Sprint Goal</h2>
+                                <p class="sprint-goal-text mt-0-5" id="sprint-goal-statement">Building...</p>
+                            </div>
+                            
+                            <!-- Export Tools Bar -->
+                            <div class="integrations-export-bar mt-1-5">
+                                <h4>Sync Sprint Backlog to Project Workspaces</h4>
+                                <div class="flex-row gap-0-5 flex-wrap mt-0-5">
+                                    <button class="btn secondary text-sm flex-1" id="export-jira-btn">
+                                        <i data-lucide="trello"></i> Export Jira
+                                    </button>
+                                    <button class="btn secondary text-sm flex-1" id="export-linear-btn">
+                                        <i data-lucide="check-square"></i> Export Linear
+                                    </button>
+                                    <button class="btn secondary text-sm flex-1" id="export-slack-btn">
+                                        <i data-lucide="slack"></i> Share on Slack
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Git Dev Staging -->
+                            <div class="git-staging-bar mt-1">
+                                <h4>Git Dev Branch Creator</h4>
+                                <p class="card-desc">Create a remote developers branch for a specific sprint ticket.</p>
+                                <div class="grid-form mt-0-5">
+                                    <input type="text" id="git-repo-owner" placeholder="Owner (e.g. google)" required value="google">
+                                    <input type="text" id="git-repo-name" placeholder="Repo Name" required value="antigravity">
+                                    <input type="text" id="git-branch-name" placeholder="Branch Name (e.g. feat-csv)" required>
+                                    <button class="btn primary text-sm" id="create-branch-btn">
+                                        <i data-lucide="git-branch"></i> Create Branch
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Ticket Cards -->
+                            <div class="section-container mt-1-5">
+                                <h4>Sprint Backlog Tickets (<span id="sprint-ticket-count">0</span>)</h4>
+                                <div class="tickets-list mt-1" id="sprint-tickets-list">
+                                    <!-- Dynamic Ticket Cards -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- GIT & QA TAB -->
+            <section id="git-qa-tab" class="tab-content">
+                <div class="page-header">
+                    <h1>Developer Staging & Compliance Tools</h1>
+                    <p class="subtitle">Auditing Pull Requests, validating codebase launch features, and handling incremental version upgrades.</p>
+                </div>
+                
+                <div class="tabs-subnav">
+                    <button class="subnav-item active" data-subtarget="pr-audit-tool">PR Compliance Audit</button>
+                    <button class="subnav-item" data-subtarget="feature-qa-tool">Codebase Feature QA</button>
+                    <button class="subnav-item" data-subtarget="version-upgrade-tool">Version Upgrader</button>
+                </div>
+                
+                <!-- TOOL 1: PR AUDIT -->
+                <div id="pr-audit-tool" class="git-qa-panel active">
+                    <div class="split-layout mt-1">
+                        <div class="panel form-panel">
+                            <h2>Audit Pull Request</h2>
+                            <p class="card-desc">Check Github or Gitlab PR file diffs against specific Sprint Ticket acceptance criteria to check compliance.</p>
+                            
+                            <form id="pr-audit-form" class="mt-1">
+                                <div class="form-group-row">
+                                    <div class="form-group">
+                                        <label for="pr-owner">Repo Owner</label>
+                                        <input type="text" id="pr-owner" placeholder="e.g. google" value="google" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pr-repo">Repo Name</label>
+                                        <input type="text" id="pr-repo" placeholder="e.g. antigravity" value="antigravity" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group-row mt-0-5">
+                                    <div class="form-group">
+                                        <label for="pr-number">PR Number</label>
+                                        <input type="number" id="pr-number" placeholder="e.g. 12" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pr-provider">Git Provider</label>
+                                        <select id="pr-provider">
+                                            <option value="github">GitHub</option>
+                                            <option value="gitlab">GitLab</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mt-1">
+                                    <label>Sprint Ticket Acceptance Criteria to Verify</label>
+                                    <div id="pr-criteria-container" class="dynamic-inputs">
+                                        <div class="dynamic-input-row">
+                                            <input type="text" class="pr-crit-input" placeholder="e.g. Process CSV exports inside a background worker queue" required>
+                                            <button type="button" class="icon-btn delete-row-btn" onclick="removeInputRow(this)">
+                                                <i data-lucide="trash-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn secondary text-sm mt-0-5" onclick="addPrCriteriaRow()">
+                                        <i data-lucide="plus"></i> Add Criteria
+                                    </button>
+                                </div>
+                                
+                                <button type="submit" class="btn primary full-width mt-1">
+                                    <i data-lucide="shield-alert"></i> Audit PR Code Diffs
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="panel output-panel" id="pr-audit-output">
+                            <div class="output-placeholder">
+                                <i data-lucide="check-circle-2" class="placeholder-icon"></i>
+                                <h3>Awaiting PR Audit Trigger</h3>
+                                <p>Submit repository details and criteria checkboxes to verify Git codebase changes.</p>
+                            </div>
+                            
+                            <div class="output-content hidden">
+                                <div class="output-header flex-column">
+                                    <div class="flex-row justify-between w-full align-center">
+                                        <h2>PR Compliance Status</h2>
+                                        <span class="compliance-badge" id="pr-status-badge">Pass</span>
+                                    </div>
+                                    <p class="card-desc mt-0-5" id="pr-summary-text"></p>
+                                </div>
+                                
+                                <div class="section-container mt-1-5">
+                                    <h4>Checked Items Checklist</h4>
+                                    <div class="checklist-items" id="pr-checked-items-container">
+                                        <!-- Dynamic items -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TOOL 2: FEATURE QA -->
+                <div id="feature-qa-tool" class="git-qa-panel">
+                    <div class="split-layout mt-1">
+                        <div class="panel form-panel">
+                            <h2>Codebase QA Audit</h2>
+                            <p class="card-desc">Asks semantic questions about target functionalities inside your codebase directory context.</p>
+                            
+                            <form id="feature-qa-form" class="mt-1">
+                                <div class="form-group">
+                                    <label for="qa-repo-path">Local Repository Path (Absolute)</label>
+                                    <input type="text" id="qa-repo-path" placeholder="e.g. D:/PM agent" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="qa-query">PM's Validation Question</label>
+                                    <input type="text" id="qa-query" placeholder="e.g. Does the exporter utility trigger background Celery tasks successfully?" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Expected Feature Specifications Checklist</label>
+                                    <div id="qa-specs-container" class="dynamic-inputs">
+                                        <div class="dynamic-input-row">
+                                            <input type="text" class="qa-spec-input" placeholder="e.g. Email download link once CSV compiles" required>
+                                            <button type="button" class="icon-btn delete-row-btn" onclick="removeInputRow(this)">
+                                                <i data-lucide="trash-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn secondary text-sm mt-0-5" onclick="addQaSpecRow()">
+                                        <i data-lucide="plus"></i> Add Spec Checklist Item
+                                    </button>
+                                </div>
+                                
+                                <button type="submit" class="btn primary full-width mt-1">
+                                    <i data-lucide="check-square"></i> Perform QA Compliance Audit
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="panel output-panel" id="feature-qa-output">
+                            <div class="output-placeholder">
+                                <i data-lucide="clipboard-check" class="placeholder-icon"></i>
+                                <h3>Awaiting Feature QA Scan</h3>
+                                <p>Provide specifications and a directory path on the left to verify capability satisfaction details.</p>
+                            </div>
+                            
+                            <div class="output-content hidden">
+                                <div class="output-header flex-column">
+                                    <div class="flex-row justify-between w-full align-center">
+                                        <h2>QA Compliance Verdict</h2>
+                                        <span class="compliance-badge" id="qa-verdict-badge">Pass</span>
+                                    </div>
+                                    <p class="qa-answer-text mt-1" id="qa-answer-text"></p>
+                                </div>
+                                
+                                <div class="section-container mt-1-5">
+                                    <h4>Checked Spec Evidence</h4>
+                                    <div class="checklist-items" id="qa-checked-items-container">
+                                        <!-- Dynamic entries -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TOOL 3: VERSION UPGRADE -->
+                <div id="version-upgrade-tool" class="git-qa-panel">
+                    <div class="split-layout mt-1">
+                        <div class="panel form-panel">
+                            <h2>Incremental Version Upgrader</h2>
+                            <p class="card-desc">Ingests previous specs alongside upgrade targets to draft a next-gen Version 2.0 PRD and transition guide.</p>
+                            
+                            <form id="upgrade-form" class="mt-1">
+                                <div class="form-group">
+                                    <label for="upgrade-prev-prd">Previous Version PRD (Markdown)</label>
+                                    <textarea id="upgrade-prev-prd" placeholder="Paste v1.0 PRD here..." rows="5" required></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="upgrade-inputs">New Features / Upgrade Goals</label>
+                                    <textarea id="upgrade-inputs" placeholder="Describe what needs to change or be added (e.g. upgrade CSV generation to run on worker threads with progressive logs and stats monitoring)" rows="3" required></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="upgrade-repo-path">Local Repository Path (Optional)</label>
+                                    <input type="text" id="qa-upgrade-path" placeholder="e.g. D:/PM agent">
+                                </div>
+                                
+                                <button type="submit" class="btn primary full-width mt-1">
+                                    <i data-lucide="chevrons-up"></i> Draft Upgraded Version PRD
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="panel output-panel" id="upgrade-output">
+                            <div class="output-placeholder">
+                                <i data-lucide="trending-up" class="placeholder-icon"></i>
+                                <h3>Awaiting Version Transition Mapping</h3>
+                                <p>Submit previous version specifications to generate a transition delta guide.</p>
+                            </div>
+                            
+                            <div class="output-content hidden">
+                                <div class="output-header flex-row justify-between align-center w-full">
+                                    <div class="flex-column">
+                                        <div class="flex-row gap-0-5 align-center">
+                                            <h2 style="font-size: 1.4rem;">Upgraded Version PRD</h2>
+                                            <span class="complexity-badge" id="upgrade-complexity-badge">Low</span>
+                                        </div>
+                                        <p class="card-desc mt-0-5" style="margin-bottom: 0;">Migration Refactoring Complexity</p>
+                                    </div>
+                                    <div class="action-buttons-group">
+                                        <button class="btn secondary text-sm" onclick="copyUpgradePrdMarkdown()" title="Copy Markdown to Clipboard">
+                                            <i data-lucide="copy"></i> Copy
+                                        </button>
+                                        <button class="btn secondary text-sm" onclick="downloadUpgradePrd()" title="Download as Markdown">
+                                            <i data-lucide="download"></i> Download
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="tabs-subnav mt-1">
+                                    <button class="upgrade-subnav-item active" data-subtarget="upgrade-prd-rendered">Upgraded PRD Specs</button>
+                                    <button class="upgrade-subnav-item" data-subtarget="upgrade-changelog">Transition Changelog</button>
+                                    <button class="upgrade-subnav-item" data-subtarget="upgrade-guide">Migration Guide</button>
+                                </div>
+                                
+                                <div class="prd-viewer-content mt-1">
+                                    <!-- Rendered Upgrade PRD -->
+                                    <div id="upgrade-prd-rendered" class="upgrade-tab-panel markdown-body active"></div>
+                                    
+                                    <!-- Changelog visual list -->
+                                    <div id="upgrade-changelog" class="upgrade-tab-panel">
+                                        <div class="changelog-list" id="upgrade-changelog-list">
+                                            <!-- Dynamic items -->
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Developer Guide markdown -->
+                                    <div id="upgrade-guide" class="upgrade-tab-panel markdown-body"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+    
+    <!-- Lucide Icons SDK -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Marked Markdown Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Prism Code Formatting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    
+    <!-- Custom Application Logic -->
+    <script src="/ui/app.js"></script>
+</body>
+</html>

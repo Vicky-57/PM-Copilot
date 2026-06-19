@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, FileResponse
+import os
 from app.models.requests import FeasibilityRequest, SprintPlanRequest, PRDGenerationRequest, FeedbackAnalysisRequest, JiraExportRequest, NotionExportRequest, LinearExportRequest, SlackExportRequest, PRAuditRequest, GitBranchRequest, FeatureQARequest, VersionUpgradeRequest
 from app.models.responses import FeasibilityResponse, SprintPlanResponse, PRDGenerationResponse, FeedbackAnalysisResponse, JiraExportResponse, NotionExportResponse, LinearExportResponse, SlackExportResponse, PRAuditResponse, GitBranchResponse, FeatureQAResponse, VersionUpgradeResponse
 from app.services.feasibility import run_feasibility_analysis
@@ -229,6 +231,33 @@ def version_upgrade(request: VersionUpgradeRequest):
         repo_path=request.repo_path,
         additional_context=request.additional_context
     )
+
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
+
+@app.get("/ui", response_class=HTMLResponse)
+@app.get("/ui/", response_class=HTMLResponse)
+def get_ui():
+    """Serves the main single-page UI."""
+    index_path = os.path.join(FRONTEND_DIR, "index.html")
+    if not os.path.exists(index_path):
+        raise HTTPException(status_code=404, detail="UI files not found. Ensure frontend/index.html is created.")
+    return FileResponse(index_path, media_type="text/html")
+
+@app.get("/ui/style.css")
+def get_style():
+    """Serves the UI stylesheet."""
+    style_path = os.path.join(FRONTEND_DIR, "style.css")
+    if not os.path.exists(style_path):
+        raise HTTPException(status_code=404, detail="style.css not found.")
+    return FileResponse(style_path, media_type="text/css")
+
+@app.get("/ui/app.js")
+def get_app():
+    """Serves the UI application logic."""
+    app_path = os.path.join(FRONTEND_DIR, "app.js")
+    if not os.path.exists(app_path):
+        raise HTTPException(status_code=404, detail="app.js not found.")
+    return FileResponse(app_path, media_type="application/javascript")
 
 if __name__ == "__main__":
     import uvicorn
