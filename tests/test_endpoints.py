@@ -12,15 +12,10 @@ from app.config import settings
 client = TestClient(app)
 
 def test_health_check():
-    """Verify that root endpoint responds successfully."""
-    response = client.get("/")
-    assert response.status_code == 200
-    data = response.json()
-    assert data["status"] == "online"
-    assert "gemini_api_configured" in data
-    assert "jira_configured" in data
-    assert "notion_configured" in data
-    assert "linear_configured" in data
+    """Verify that root endpoint redirects to UI."""
+    response = client.get("/", follow_redirects=False)
+    assert response.status_code in (302, 307)
+    assert response.headers["location"] == "/ui"
 
 def test_analyze_feasibility_invalid_request():
     """Verify endpoint rejects requests with missing or invalid fields."""

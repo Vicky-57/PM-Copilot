@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse
 import os
 from app.models.requests import FeasibilityRequest, SprintPlanRequest, PRDGenerationRequest, FeedbackAnalysisRequest, JiraExportRequest, NotionExportRequest, LinearExportRequest, SlackExportRequest, PRAuditRequest, GitBranchRequest, FeatureQARequest, VersionUpgradeRequest
 from app.models.responses import FeasibilityResponse, SprintPlanResponse, PRDGenerationResponse, FeedbackAnalysisResponse, JiraExportResponse, NotionExportResponse, LinearExportResponse, SlackExportResponse, PRAuditResponse, GitBranchResponse, FeatureQAResponse, VersionUpgradeResponse
@@ -34,24 +34,8 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    """Health check endpoint and general diagnostic details."""
-    has_claude = bool(settings.CLAUDE_API_KEY)
-    has_gemini = bool(settings.GEMINI_API_KEY)
-    has_groq = bool(settings.GROQ_API_KEY)
-    has_jira = bool(settings.JIRA_URL and settings.JIRA_EMAIL and settings.JIRA_API_TOKEN)
-    has_notion = bool(settings.NOTION_API_KEY)
-    has_linear = bool(settings.LINEAR_API_KEY and settings.LINEAR_TEAM_ID)
-    return {
-        "status": "online",
-        "service": "AI Product Manager Copilot Backend",
-        "claude_api_configured": has_claude,
-        "groq_api_configured": has_groq,
-        "gemini_api_configured": has_gemini,
-        "jira_configured": has_jira,
-        "notion_configured": has_notion,
-        "linear_configured": has_linear,
-        "docs_url": "/docs"
-    }
+    """Redirect root to the UI."""
+    return RedirectResponse(url="/ui")
 
 @app.get("/api/test-connection")
 def test_connection():
