@@ -215,7 +215,7 @@ async function runConnectionDiagnostics() {
 
     try {
         // Fetch health config check
-        const data = await apiCall("/");
+        const data = await apiCall("/api/health");
         
         // Update dashboard status rows
         updateStatusBadge("diag-llm", data.claude_api_configured || data.gemini_api_configured || data.groq_api_configured ? "active" : "inactive", data.claude_api_configured ? "Claude" : (data.gemini_api_configured ? "Gemini" : (data.groq_api_configured ? "Groq" : "Not Configured")));

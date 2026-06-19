@@ -17,6 +17,17 @@ def test_health_check():
     assert response.status_code in (302, 307)
     assert response.headers["location"] == "/ui"
 
+def test_api_health_check():
+    """Verify that /api/health endpoint responds successfully."""
+    response = client.get("/api/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "online"
+    assert "gemini_api_configured" in data
+    assert "jira_configured" in data
+    assert "notion_configured" in data
+    assert "linear_configured" in data
+
 def test_analyze_feasibility_invalid_request():
     """Verify endpoint rejects requests with missing or invalid fields."""
     response = client.post("/api/analyze-feasibility", json={})
