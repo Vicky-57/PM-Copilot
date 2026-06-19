@@ -26,4 +26,4 @@ ENV/
 Thumbs.db
 
 # Dynamic E2E test directories
-scratch_mock_repo/
+# scratch_mock_repo/
