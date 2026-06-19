@@ -14,7 +14,18 @@ def run_feature_qa(
     Evaluates whether the created feature in the codebase conforms to the product launch event
     specifications, benefits, and capabilities by running code-backed Q&A audits.
     """
-    is_dry_run = not repo_path or not os.path.isdir(repo_path)
+    resolved_path = None
+    if repo_path:
+        expanded_path = os.path.abspath(os.path.expanduser(repo_path))
+        if os.path.isdir(expanded_path):
+            resolved_path = expanded_path
+        else:
+            basename = os.path.basename(repo_path)
+            fallback_path = os.path.abspath(basename)
+            if os.path.isdir(fallback_path):
+                resolved_path = fallback_path
+
+    is_dry_run = not resolved_path
     
     if is_dry_run:
         # Simulate dry-run response
@@ -43,7 +54,7 @@ def run_feature_qa(
     file_tree = ""
     file_contents_str = ""
     try:
-        file_tree, file_contents, _ = scan_directory(repo_path)
+        file_tree, file_contents, _ = scan_directory(resolved_path)
         contents_list = []
         for path, content in file_contents.items():
             contents_list.append(f"File: {path}\nContent:\n{content}\n" + "="*40)
@@ -101,12 +112,23 @@ def run_version_upgrade(
     Ingests previous PRD requirements, codebase layout, user instructions, and historical metrics
     to construct a unified version upgrade PRD, transition changelog, and developer migration guide.
     """
-    is_dry_run = not repo_path or not os.path.isdir(repo_path)
+    resolved_path = None
+    if repo_path:
+        expanded_path = os.path.abspath(os.path.expanduser(repo_path))
+        if os.path.isdir(expanded_path):
+            resolved_path = expanded_path
+        else:
+            basename = os.path.basename(repo_path)
+            fallback_path = os.path.abspath(basename)
+            if os.path.isdir(fallback_path):
+                resolved_path = fallback_path
+
+    is_dry_run = not resolved_path
     
     file_tree = "Dry-Run: No codebase scanned"
     if not is_dry_run:
         try:
-            file_tree, _, _ = scan_directory(repo_path)
+            file_tree, _, _ = scan_directory(resolved_path)
         except Exception as e:
             file_tree = f"Failed to scan repo path: {str(e)}"
             

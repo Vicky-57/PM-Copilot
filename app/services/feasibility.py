@@ -32,10 +32,16 @@ def run_feasibility_analysis(
         # Resolve user home directories or relative paths
         expanded_path = os.path.abspath(os.path.expanduser(repo_path))
         if not os.path.exists(expanded_path):
-            raise HTTPException(
-                status_code=400,
-                detail=f"The specified repository path does not exist: {repo_path}"
-            )
+            # Fallback: check if the basename exists in the current working directory
+            basename = os.path.basename(repo_path)
+            fallback_path = os.path.abspath(basename)
+            if os.path.exists(fallback_path):
+                expanded_path = fallback_path
+            else:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"The specified repository path does not exist: {repo_path}"
+                )
         
         try:
             file_tree, file_contents, is_truncated = scan_directory(

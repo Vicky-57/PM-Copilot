@@ -187,8 +187,16 @@ async function apiCall(endpoint, method = "GET", payload = null) {
         config.body = JSON.stringify(payload);
     }
     
+    // Automatically direct API calls to local port 8000 if running from a file or another local dev port
+    let url = endpoint;
+    const isLocalHost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    const isDifferentPort = window.location.port !== "8000" && window.location.port !== "";
+    if (window.location.protocol === "file:" || (isLocalHost && isDifferentPort)) {
+        url = `http://127.0.0.1:8000${endpoint}`;
+    }
+    
     try {
-        const response = await fetch(endpoint, config);
+        const response = await fetch(url, config);
         if (response.ok) {
             return await response.json();
         } else {
