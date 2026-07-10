@@ -226,14 +226,14 @@ async function runConnectionDiagnostics() {
         const data = await apiCall("/api/health");
         
         // Update dashboard status rows
-        updateStatusBadge("diag-llm", data.claude_api_configured || data.gemini_api_configured || data.groq_api_configured ? "active" : "inactive", data.claude_api_configured ? "Claude" : (data.gemini_api_configured ? "Gemini" : (data.groq_api_configured ? "Groq" : "Not Configured")));
+        updateStatusBadge("diag-llm", data.sarvam_api_configured || data.claude_api_configured || data.gemini_api_configured || data.groq_api_configured ? "active" : "inactive", data.sarvam_api_configured ? "Sarvam" : (data.claude_api_configured ? "Claude" : (data.gemini_api_configured ? "Gemini" : (data.groq_api_configured ? "Groq" : "Not Configured"))));
         updateStatusBadge("diag-jira", data.jira_configured ? "active" : "inactive", data.jira_configured ? "Configured" : "Dry-Run Mode");
         updateStatusBadge("diag-notion", data.notion_configured ? "active" : "inactive", data.notion_configured ? "Configured" : "Dry-Run Mode");
         updateStatusBadge("diag-linear", data.linear_configured ? "active" : "inactive", data.linear_configured ? "Configured" : "Dry-Run Mode");
         updateStatusBadge("diag-slack", data.slack_configured || data.slack_configured === undefined ? "active" : "inactive", "Configured");
         
         // Update sidebar badges
-        updateSidebarStatusBadge(0, data.claude_api_configured || data.gemini_api_configured || data.groq_api_configured, data.claude_api_configured ? "Claude" : (data.gemini_api_configured ? "Gemini" : "Groq"));
+        updateSidebarStatusBadge(0, data.sarvam_api_configured || data.claude_api_configured || data.gemini_api_configured || data.groq_api_configured, data.sarvam_api_configured ? "Sarvam" : (data.claude_api_configured ? "Claude" : (data.gemini_api_configured ? "Gemini" : "Groq")));
         updateSidebarStatusBadge(1, data.jira_configured, data.jira_configured ? "Active" : "Dry-Run");
         updateSidebarStatusBadge(2, data.notion_configured, data.notion_configured ? "Active" : "Dry-Run");
         updateSidebarStatusBadge(3, data.linear_configured, data.linear_configured ? "Active" : "Dry-Run");
