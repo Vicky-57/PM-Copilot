@@ -9,9 +9,9 @@ from app.config import settings
 T = TypeVar("T", bound=BaseModel)
 
 # Lazy import to avoid circular dependency
-def _get_claude_service():
-    from app.services.claude_service import ClaudeService
-    return ClaudeService
+def _get_sarvam_service():
+    from app.services.sarvam_service import SarvamService
+    return SarvamService
 
 class GeminiService:
     @staticmethod
@@ -34,20 +34,20 @@ class GeminiService:
     ) -> T:
         """
         Generates content from the LLM provider and forces a structured JSON response matching the Pydantic schema.
-        Provider priority: Claude > Groq > Gemini. Falls back to next provider on error.
+        Provider priority: Sarvam > Groq > Gemini. Falls back to next provider on error.
         """
-        # 1. Try Claude first (highest priority)
-        if settings.CLAUDE_API_KEY:
+        # 1. Try Sarvam first (highest priority)
+        if settings.SARVAM_API_KEY:
             try:
-                ClaudeService = _get_claude_service()
-                # Don't pass Gemini-specific model names to Claude — let it use its default
-                claude_model = None if (model_name and model_name.startswith("gemini")) else model_name
-                return ClaudeService.generate_structured_data(prompt, schema, system_instruction, claude_model)
+                SarvamService = _get_sarvam_service()
+                # Don't pass Gemini-specific model names to Sarvam — let it use its default
+                sarvam_model = None if (model_name and model_name.startswith("gemini")) else model_name
+                return SarvamService.generate_structured_data(prompt, schema, system_instruction, sarvam_model)
             except HTTPException:
-                # Re-raise Claude's own HTTP errors — don't silently fall back, so the real error is visible
+                # Re-raise Sarvam's own HTTP errors — don't silently fall back, so the real error is visible
                 raise
             except Exception as e:
-                print(f"[ClaudeService] Non-HTTP error, attempting fallback: {type(e).__name__}: {e}")
+                print(f"[SarvamService] Non-HTTP error, attempting fallback: {type(e).__name__}: {e}")
                 # Fall through to Groq or Gemini only for network/unexpected errors
                 if not settings.GROQ_API_KEY and not settings.GEMINI_API_KEY:
                     raise e
@@ -238,14 +238,14 @@ class GeminiService:
         
     @classmethod
     def test_connection(cls) -> bool:
-        """Helper to quickly test if the API key and connection are working. Checks Claude > Groq > Gemini."""
-        # 1. Try Claude
-        if settings.CLAUDE_API_KEY:
+        """Helper to quickly test if the API key and connection are working. Checks Sarvam > Groq > Gemini."""
+        # 1. Try Sarvam
+        if settings.SARVAM_API_KEY:
             try:
-                ClaudeService = _get_claude_service()
-                return ClaudeService.test_connection()
+                SarvamService = _get_sarvam_service()
+                return SarvamService.test_connection()
             except Exception as e:
-                print(f"Claude connection check failed: {e}")
+                print(f"Sarvam connection check failed: {e}")
                 return False
 
         # 2. Try Groq

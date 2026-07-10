@@ -40,7 +40,7 @@ def read_root():
 @app.get("/api/health")
 def health_check():
     """Health check endpoint and general diagnostic details."""
-    has_claude = bool(settings.CLAUDE_API_KEY)
+    has_sarvam = bool(settings.SARVAM_API_KEY)
     has_gemini = bool(settings.GEMINI_API_KEY)
     has_groq = bool(settings.GROQ_API_KEY)
     has_jira = bool(settings.JIRA_URL and settings.JIRA_EMAIL and settings.JIRA_API_TOKEN)
@@ -49,7 +49,7 @@ def health_check():
     return {
         "status": "online",
         "service": "AI Product Manager Copilot Backend",
-        "claude_api_configured": has_claude,
+        "sarvam_api_configured": has_sarvam,
         "groq_api_configured": has_groq,
         "gemini_api_configured": has_gemini,
         "jira_configured": has_jira,
@@ -61,15 +61,15 @@ def health_check():
 @app.get("/api/test-connection")
 def test_connection():
     """Diagnostic check to verify that the configured API keys are working."""
-    if not settings.CLAUDE_API_KEY and not settings.GROQ_API_KEY and not settings.GEMINI_API_KEY:
+    if not settings.SARVAM_API_KEY and not settings.GROQ_API_KEY and not settings.GEMINI_API_KEY:
         raise HTTPException(
             status_code=400,
-            detail="No API keys are set. Please configure CLAUDE_API_KEY, GEMINI_API_KEY, or GROQ_API_KEY in your .env file."
+            detail="No API keys are set. Please configure SARVAM_API_KEY, GEMINI_API_KEY, or GROQ_API_KEY in your .env file."
         )
     
     is_connected = GeminiService.test_connection()
-    if settings.CLAUDE_API_KEY:
-        provider = "Claude (Anthropic)"
+    if settings.SARVAM_API_KEY:
+        provider = "Sarvam"
     elif settings.GROQ_API_KEY:
         provider = "Groq"
     else:
